@@ -1,0 +1,18 @@
+export const ROUTES = {
+    DASHBOARD: "/",
+    LANDING_PAGE: "/landingpage",
+    LOGIN: "/login",
+    SIGNUP: "/signup",
+    ANALYTICS: "analytics",
+    REVENUE: "revenue",
+    FOOD: "food",
+    FRUITS: "fruits",
+    BOOKS: "books",
+    CARS: "cars",
+    MOVIES: "movies",
+    DATA: "data",
+    REGISTERFORM: "form",
+    DATA_CATEGORY: "data/:categoryId",
+    CONTACT: "contact",
+    SETTINGS: "settings",
+};
