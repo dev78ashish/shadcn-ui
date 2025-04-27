@@ -39,6 +39,7 @@ const RegisterForm = () => {
 
     const form = useForm({
         resolver: zodResolver(registerSchema),
+        mode: "onChange",
         defaultValues: {
             name: "",
             email: "",
@@ -66,16 +67,13 @@ const RegisterForm = () => {
 
 
             toast.success("Your information has been submitted successfully. 👋");
-            // toast.
+            
+            console.log(formData)
 
             form.reset();
             setPreviewImage(null);
         } catch (error) {
-            // toast({
-            //     title: "Error",
-            //     description: "There was a problem submitting your information.",
-            //     variant: "destructive",
-            // });
+            toast.error("Form submission failed. Try again!");
         } finally {
             setIsSubmitting(false);
         }
@@ -105,40 +103,46 @@ const RegisterForm = () => {
             <CardContent>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-                        <div className="flex flex-col items-center mb-6">
-                            <FormField
-                                control={form.control}
-                                name="image"
-                                render={({ field: { onChange, value, ...rest } }) => (
-                                    <FormItem className='text-center'>
-                                        <FormLabel>Upload Profile Picture</FormLabel>
-                                        <FormControl>
-                                            <div className="flex flex-col items-center gap-4">
-                                                <Avatar className='w-24 h-24'>
+                        <FormField
+                            control={form.control}
+                            name="image"
+                            render={({ field: { onChange, value, ...rest } }) => (
+                                <FormItem className="text-center">
+                                    <FormLabel>Upload Profile Picture</FormLabel>
+                                    <FormControl>
+                                        <div className="flex flex-col items-center gap-4">
+                                            {/* Label wraps Avatar and triggers file input */}
+                                            <label htmlFor="profile-picture-upload" className="cursor-pointer">
+                                                <Avatar className="w-24 h-24">
                                                     {previewImage ? (
-                                                        <AvatarImage src={previewImage} alt='Profile' />
+                                                        <AvatarImage src={previewImage} alt="Profile" />
                                                     ) : (
                                                         <AvatarFallback>
                                                             <span className="text-2xl">+</span>
                                                         </AvatarFallback>
                                                     )}
                                                 </Avatar>
-                                                <Input
-                                                    type="file"
-                                                    accept="image/jpeg,image/png,image/jpg"
-                                                    onChange={(e) => {
-                                                        handleImageChange(e);
-                                                        onChange(e.target.files);
-                                                    }}
-                                                    {...rest}
-                                                />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+                                            </label>
+
+                                            {/* Hidden File Input */}
+                                            <Input
+                                                id="profile-picture-upload"
+                                                type="file"
+                                                accept="image/jpeg,image/png,image/jpg"
+                                                className="hidden"
+                                                onChange={(e) => {
+                                                    handleImageChange(e);
+                                                    onChange(e.target.files);
+                                                }}
+                                                {...rest}
+                                            />
+                                        </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
 
                         <FormField
                             control={form.control}
@@ -157,7 +161,7 @@ const RegisterForm = () => {
                         <FormField
                             control={form.control}
                             name="email"
-                            render={({ field }) => (  
+                            render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
